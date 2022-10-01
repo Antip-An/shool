@@ -1,9 +1,7 @@
 const db = require("../../utils/db");
 
 const ControllerException = require("../../utils/ControllerException");
-const allusersController = require("../allusers");
 const usersController = require("../users");
-const adminController = require("../admin");
 //const { test } = require("../../knexfile");
 
 const users = [
@@ -21,7 +19,7 @@ beforeEach(async () => {
 // allusers
 
 test("Can register user", async () => {
-  const data = await allusersController.register(users[0]);
+  const data = await usersController.singup(users[0]);
 
   expect(data).toEqual(expect.any(Object));
   expect(data.userId).toEqual(expect.any(Number));
@@ -29,7 +27,7 @@ test("Can register user", async () => {
 });
 
 test("Can save all fields on register", async () => {
-  const { userId } = await allusersController.register(users[0]);
+  const { userId } = await usersController.singup(users[0]);
   const record = await adminController.getUserById({ userId });
 
   expect(record.login).toBe(users[0].login);
@@ -39,24 +37,24 @@ test("Can save all fields on register", async () => {
 });
 
 test("Cannot register with same login twice", async () => {
-  await allusersController.register(users[0]);
-  const result = await allusersController.register(users[0]).catch((err) => err);
+  await usersController.singup(users[0]);
+  const result = await usersController.singup(users[0]).catch((err) => err);
 
   expect(result).toEqual(expect.any(ControllerException));
-  expect(result.exceptionCode).toBe("LOGIN_IN_USE");
+  expect(result.exceptionCode).toBe("SINGUP_ERROR");
 });
 
 test("Cannot register with same email twice", async () => {
-  await allusersController.register(users[0]);
-  const result = await allusersController.register(users[1]).catch((err) => err);
+  await usersController.singup(users[0]);
+  const result = await usersController.singup(users[1]).catch((err) => err);
 
   expect(result).toEqual(expect.any(ControllerException));
-  expect(result.exceptionCode).toBe("EMAIL_IN_USE");
+  expect(result.exceptionCode).toBe("SINGUP_ERROR");
 });
 
 test("Can login user", async () => {
-  const data = await allusersController.register(users[0]);
-  const result = await allusersController.login(users[0]).catch((err) => err);
+  const data = await usersController.singup(users[0]);
+  const result = await usersController.singin(users[0]).catch((err) => err);
 
   expect(data).toEqual(expect.any(Object));
   expect(result).toEqual(expect.any(Object));
@@ -67,10 +65,10 @@ test("Can login user", async () => {
 })
 
 test("Cannot login user", async () => {
-  const result = await allusersController.login(users[0]).catch((err) => err);
+  const result = await usersController.singin(users[0]).catch((err) => err);
 
   expect(result).toEqual(expect.any(ControllerException));
-  expect(result.exceptionCode).toBe("USER_NOT_FOUND");
+  expect(result.exceptionCode).toBe("SINGIN_ERROR");
 })
 
 // users

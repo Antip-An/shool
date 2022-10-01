@@ -24,7 +24,7 @@ exports.createCourse = async ({ title, photo, description }) => {
 exports.updateCourse = async ({ courseId, title, photo, description }) => {
   const [record] = await knex("courses")
     .select("id", "title", "photo", "description")
-    .where({ id: courseId });
+    .where({ id: courseId })
 
   if (!record) {
     throw new ControllerException(
@@ -37,7 +37,7 @@ exports.updateCourse = async ({ courseId, title, photo, description }) => {
   if (title !== undefined) patch.title = title;
   if (photo !== undefined) patch.photo = photo;
   if (description !== undefined) patch.description = description;
-
+  
   await knex("courses").update(patch).where({ id: courseId });
   return {};
 };

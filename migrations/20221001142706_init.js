@@ -17,8 +17,8 @@ exports.up = async (knex) => {
     await knex.schema.createTable("courses", (table) => {
         table.increments("id");
         table.string("title").unique().notNullable();
-        table.string("photo").notNullable();
         table.text("description").notNullable();
+        table.string("photo").notNullable();
         table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
         table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
     });
@@ -34,28 +34,27 @@ exports.up = async (knex) => {
         table.foreign("id_course").references('courses.id');
     });
 
-    await knex.schema.createTable("tests", (table) => {
-        table.increments("id");
-        table.string("title").notNullable();
-        table.text("description").notNullable();
-        table.integer("id_lessons").notNullable();
-        table.foreign("id_lessons").references('lessons.id');
-        table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
-        table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
-    });
-
     await knex.schema.createTable("tasks", (table) => {
         table.increments("id");
         table.text("question").notNullable();
-        table.string("photo");
-        table.integer("mark").notNullable();
-        table
-            .enu("type_test", ["text", "option"])
-            .notNullable();
         table.string("right_answer");
-        table.integer("id_test").notNullable();
-        table.foreign("id_test").references('tests.id');
+        table.string("photo");
+        table.integer("id_lesson").notNullable();
+        table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
+        table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
+        table.foreign("id_lesson").references('lessons.id');
     });
+
+
+    // await knex.schema.createTable("tests", (table) => {
+    //     table.increments("id");
+    //     table.string("title").notNullable();
+    //     table.text("description").notNullable();
+    //     table.integer("id_lessons").notNullable();
+    //     table.foreign("id_lessons").references('lessons.id');
+    //     table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
+    //     table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
+    // });
 
     // await knex.schema.createTable("options", (table) => {
     //     table.increments("id");
@@ -68,8 +67,8 @@ exports.up = async (knex) => {
 
 exports.down = async (knex) => {
     // await knex.schema.dropTableIfExists("options");
+    // await knex.schema.dropTableIfExists("tests");
     await knex.schema.dropTableIfExists("tasks");
-    await knex.schema.dropTableIfExists("tests");
     await knex.schema.dropTableIfExists("lessons");
     await knex.schema.dropTableIfExists("users");
     await knex.schema.dropTableIfExists("courses");

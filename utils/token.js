@@ -9,11 +9,13 @@ exports.sign = (userId) => {
 
 exports.verify = (token) => {
   try {
+    console.log("token")
     return jwt.verify(token, process.env.JWT_SECRET_KEY).userId;
   } catch (error) {
     throw new ControllerException(
       "ACCESS_DENIED",
-      "Malicious access token"
+      "Malicious access token",
+      console.log("token1")
     );
   }
 };
