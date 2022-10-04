@@ -18,7 +18,7 @@ exports.up = async (knex) => {
         table.increments("id");
         table.string("title").unique().notNullable();
         table.text("description").notNullable();
-        table.string("photo").notNullable();
+        table.string("photo");
         table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());
         table.timestamp("updated_at").notNullable().defaultTo(knex.fn.now());
     });

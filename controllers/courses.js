@@ -70,7 +70,7 @@ exports.getCourseById = async ({ courseId }) => {
   return record;
 };
 
-exports.getCourseList = async (limit) => {
+exports.getCoursesList = async (limit) => {
   const record = await knex("courses").select("*").limit(limit);
   if (!record) {
     throw new ControllerException(

@@ -43,7 +43,7 @@ router.get(
   // auth("user"),
   wrap(async (req, res) => {
     const { limit } = req.params;
-    const courses = await courseController.getCourseList({
+    const courses = await courseController.getCoursesList({
       limit: +limit || 10,
     });
 
