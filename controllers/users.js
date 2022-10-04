@@ -78,6 +78,7 @@ exports.changeRole = async ({ userId, role }) => {
 
 // edit profile (user)
 exports.editProfile = async ({ userId, login, email, password }) => {
+  const hashedPassword = await hash(password, 10);
   const [record] = await knex("users")
     . where({ id: userId })
     .select("id", "login", "email", "password");
@@ -95,7 +96,7 @@ exports.editProfile = async ({ userId, login, email, password }) => {
     patch.email_confirmation_code = "000000";
   }
 
-  if (password) patch.password = password;
+  if (password) patch.password = hashedPassword;
 
   await knex("users").update(patch).where({ id: userId });
 

@@ -78,6 +78,6 @@ exports.getCourseList = async (limit) => {
       "Courses has not been found"
     );
   }
-
+  console.log(record)
   return record;
 };

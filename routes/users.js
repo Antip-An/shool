@@ -6,6 +6,7 @@ const { sign: signToken } = require("../utils/token");
 const auth = require("./middelwares/auth");
 const validate = require("./middelwares/validate");
 const checkUser = require("./middelwares/checkUser");
+const { request } = require("express");
 
 const router = express.Router();
 
@@ -44,19 +45,6 @@ router.post(
 );
 
 router.get(
-  "/:id",
-  // auth("admin"),
-  body("userId").isNumeric(),
-  wrap(async (req, res) => {
-    const user = await usersController.getUserById({
-      userId: req.params.id,
-    });
-
-    res.send({ success: true, user });
-  })
-);
-
-router.get(
   "/list/:lim",
   // auth("admin"),
   wrap(async (req, res) => {
@@ -89,6 +77,19 @@ router.post(
   })
 );
 
+router.get(
+  "/profile",
+  checkUser(),
+  wrap(async (req, res) => {
+    const { userId } = req.user
+    const user = await usersController.getUserById({
+      userId
+    });
+
+    res.send({ success: true, user });
+  })
+);
+
 router.post(
   "/profile/edit",
   //auth("user"),
@@ -101,6 +102,8 @@ router.post(
     res.send({ success: true });
   })
 );
+
+
 
 // router.post(
 //   "/profile/edit",
@@ -125,6 +128,19 @@ router.delete(
     await usersController.deleteUser({ userId: req.params.id });
 
     res.send({ success: true });
+  })
+);
+
+router.get(
+  "/:id",
+  // auth("admin"),
+  body("userId").isNumeric(),
+  wrap(async (req, res) => {
+    const user = await usersController.getUserById({
+      userId: req.params.id,
+    });
+
+    res.send({ success: true, user });
   })
 );
 
