@@ -83,3 +83,15 @@ exports.getLessonsList = async (limit) => {
   console.log(record)
   return record;
 };
+
+exports.getLessonsForCourse = async (courseId) => {
+  const record = await knex("lessons").select("*").where({id_course:courseId})
+  if (!record) {
+    throw new ControllerException(
+      "LIST_LESSONS_ERROR",
+      "Lessons has not been found"
+    );
+  }
+  console.log(record)
+  return record;
+}

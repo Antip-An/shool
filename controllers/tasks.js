@@ -83,3 +83,15 @@ exports.getTasksList = async (limit) => {
   console.log(record)
   return record;
 };
+
+exports.getTasksForLessons = async (lessonId) => {
+  const record = await knex("tasks").select("*").where({id_lesson:lessonId})
+  if (!record) {
+    throw new ControllerException(
+      "LIST_TASK_ERROR",
+      "Task has not been found"
+    );
+  }
+  console.log(record)
+  return record;
+}

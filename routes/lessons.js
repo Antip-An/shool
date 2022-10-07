@@ -1,4 +1,5 @@
 const lessonController = require("../controllers/lessons");
+const taskController = require("../controllers/tasks");
 const { wrap } = require("async-middleware");
 const auth = require("./middelwares/auth");
 const express = require("express");
@@ -57,6 +58,7 @@ router.get(
   })
 );
 
+
 router.delete(
   "/:id",
   //auth("admin"),
@@ -83,6 +85,27 @@ router.get(
     res.send({
       success: true,
       order: { lessonId, title, lesson, photo, id_course },
+    });
+  })
+);
+
+router.get(
+  "/:id/tasks",
+  // auth("admin"),
+  wrap(async (req, res) => {
+    const id = req.params.id;
+    const lesson = await lessonController.getLessonById({ lessonId: id });
+    if (!lesson)
+      return res.send({
+        success: false,
+        message: "Урока не существует",
+      });
+
+    const tasks = await taskController.getTasksForLessons(lesson.id);
+
+    res.send({
+      success: true,
+      tasks,
     });
   })
 );

@@ -1,4 +1,6 @@
 const courseController = require("../controllers/courses");
+const lessonController = require("../controllers/lessons");
+
 const { wrap } = require("async-middleware");
 const auth = require("./middelwares/auth");
 const express = require("express");
@@ -80,6 +82,27 @@ router.get(
     res.send({
       success: true,
       order: { courseId, title, photo, description },
+    });
+  })
+);
+
+router.get(
+  "/:id/lessons",
+  // auth("admin"),
+  wrap(async (req, res) => {
+    const id = req.params.id;
+    const course = await courseController.getCourseById({ courseId: id });
+    if (!course)
+      return res.send({
+        success: false,
+        message: "Курса не существует",
+      });
+
+    const lessons = await lessonController.getLessonsForCourse(course.id);
+
+    res.send({
+      success: true,
+      lessons,
     });
   })
 );
