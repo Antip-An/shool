@@ -9,10 +9,10 @@ router.post(
   "/create",
   //auth("admin"),
   wrap(async (req, res) => {
-    const { title, lesson, photo, id_course } = req.body;
+    const { title, study, photo, id_course } = req.body;
     const { lessonId } = await lessonController.createLesson({
       title,
-      lesson,
+      study,
       photo,
       id_course
     });
@@ -25,11 +25,11 @@ router.post(
   "/update/:id",
   // auth("admin"),
   wrap(async (req, res) => {
-    const { title, lesson, photo, id_course } = req.body;
+    const { title, study, photo, id_course } = req.body;
     await lessonController.updateLesson({
       lessonId: req.params.id,
       title,
-      lesson,
+      study,
       photo,
       id_course
     });
@@ -77,14 +77,14 @@ router.get(
     const {
       id: lessonId,
       title,
-      lesson,
+      study,
       photo,
       id_course
     } = await lessonController.getLessonById({ lessonId: id });
 
     res.send({
       success: true,
-      order: { lessonId, title, lesson, photo, id_course },
+      order: { lessonId, title, study, photo, id_course },
     });
   })
 );

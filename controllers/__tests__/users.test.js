@@ -2,7 +2,7 @@ const db = require("../../utils/db");
 
 const ControllerException = require("../../utils/ControllerException");
 const usersController = require("../users");
-//const { test } = require("../../knexfile");
+// const { test } = require("../../knexfile");
 
 const users = [
   { login: "John", email: "johm@smith.com", password: "12345" },
@@ -16,7 +16,6 @@ beforeEach(async () => {
   await db.seed.run();
 });
 
-// allusers
 
 test("Can register user", async () => {
   const data = await usersController.singup(users[0]);
@@ -28,7 +27,7 @@ test("Can register user", async () => {
 
 test("Can save all fields on register", async () => {
   const { userId } = await usersController.singup(users[0]);
-  const record = await adminController.getUserById({ userId });
+  const record = await usersController.getUserById({ userId });
 
   expect(record.login).toBe(users[0].login);
   expect(record.email).toBe(users[0].email);
@@ -70,9 +69,3 @@ test("Cannot login user", async () => {
   expect(result).toEqual(expect.any(ControllerException));
   expect(result.exceptionCode).toBe("SINGIN_ERROR");
 })
-
-// users
-
-
-
-//admin

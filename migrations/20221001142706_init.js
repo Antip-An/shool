@@ -26,7 +26,7 @@ exports.up = async (knex) => {
     await knex.schema.createTable("lessons", (table) => {
         table.increments("id");
         table.string("title").notNullable();
-        table.text("lesson").notNullable();
+        table.text("study").notNullable();
         table.string("photo");
         table.integer('id_course').notNullable();
         table.timestamp("created_at").notNullable().defaultTo(knex.fn.now());

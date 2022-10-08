@@ -4,8 +4,8 @@ const ControllerException = require("../../utils/ControllerException");
 const coursesController = require("../courses");
 
 const courses = [
-    { title: "course1", description: "about", photo: "1"},
-    { title: "course2", description: "about", photo: "2" }
+    { title: "course1", description: "about"},
+    { title: "course2", description: "about" }
 ];
 
 beforeEach(async () => {

@@ -22,7 +22,8 @@
     "knex": "^2.3.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.8.0",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "seed-js": "^0.0.11"
   },
   "devDependencies": {
     "jest": "^29.1.2",

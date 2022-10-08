@@ -2,7 +2,7 @@ const ControllerException = require("../utils/ControllerException");
 const knex = require("../utils/db");
 
 //create lesson (admin)
-exports.createLesson = async ({ title, lesson, photo, id_course }) => {
+exports.createLesson = async ({ title, study, photo, id_course }) => {
   const [record] = await knex("lessons").select("id").where({ title: title });
   if (record) {
     throw new ControllerException("TITLE_IN_USE", "Title is already in use");
@@ -12,7 +12,7 @@ exports.createLesson = async ({ title, lesson, photo, id_course }) => {
     .insert([
       {
         title,
-        lesson,
+        study,
         photo,
         id_course
       },
@@ -22,9 +22,9 @@ exports.createLesson = async ({ title, lesson, photo, id_course }) => {
 };
 
 //edit lesson (admin)
-exports.updateLesson = async ({ lessonId, title, lesson, photo, id_course }) => {
+exports.updateLesson = async ({ lessonId, title, study, photo, id_course }) => {
   const [record] = await knex("lessons")
-    .select("id", "title", "lesson", "photo", "id_course")
+    .select("id", "title", "study", "photo", "id_course")
     .where({ id: lessonId })
 
   if (!record) {
@@ -36,7 +36,7 @@ exports.updateLesson = async ({ lessonId, title, lesson, photo, id_course }) => 
 
   const patch = {};
   if (title !== undefined) patch.title = title;
-  if (lesson !== undefined) patch.lesson = lesson;
+  if (study !== undefined) patch.study = study;
   if (photo !== undefined) patch.photo = photo;
   if (id_course !== undefined) patch.id_course = id_course;
   
@@ -62,7 +62,7 @@ exports.deleteLesson = async ({ lessonId }) => {
 // get by id (admin)
 exports.getLessonById = async ({ lessonId }) => {
   const [record] = await knex("lessons")
-    .select("id", "title", "lesson", "photo", "id_course")
+    .select("id", "title", "study", "photo", "id_course")
     .where({ id: lessonId });
 
     if (!record) {
